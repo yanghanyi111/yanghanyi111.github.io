@@ -1,0 +1,490 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="@TOC   一、什么是SpringIOC？1.Ioc（控制反转）360百科：控制反转(Inversion of Control，英文缩写为IoC)是框架的重要特征。也就是将两个类之间的赋值关系转换给第三方容器spring处理；两个类A和B 直接创建B 现在不直接创建而是交给第三方容器让它来新建。 2.反转的解释谁控制谁，控制什么：传统Java SE程序设计，我们直接在对象内部通过new进行创建对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Outsider的一丢丢分享">
+<meta property="og:url" content="http://example.com/2022/03/11/Java%E7%9A%84%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E7%9A%84%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Outsider的一丢丢分享">
+<meta property="og:description" content="@TOC   一、什么是SpringIOC？1.Ioc（控制反转）360百科：控制反转(Inversion of Control，英文缩写为IoC)是框架的重要特征。也就是将两个类之间的赋值关系转换给第三方容器spring处理；两个类A和B 直接创建B 现在不直接创建而是交给第三方容器让它来新建。 2.反转的解释谁控制谁，控制什么：传统Java SE程序设计，我们直接在对象内部通过new进行创建对">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210311190644440.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L091dHNpZGVyZw==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210311191836849.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L091dHNpZGVyZw==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210311193401917.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L091dHNpZGVyZw==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210311202226885.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L091dHNpZGVyZw==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210311193620851.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L091dHNpZGVyZw==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210311193655404.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L091dHNpZGVyZw==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2022-03-11T14:49:56.872Z">
+<meta property="article:modified_time" content="2022-03-11T14:50:16.109Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20210311190644440.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L091dHNpZGVyZw==,size_16,color_FFFFFF,t_70#pic_center">
+  
+  
+  <title>Outsider的一丢丢分享</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-03-11 22:49" pubdate>
+        2022年3月11日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      22 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            <div class="markdown-body">
+              <p>@<a href="%E6%96%87%E7%AB%A0%E7%9B%AE%E5%BD%95">TOC</a></p>
+<hr style=" border:solid; width:100px; height:1px;" color=#000000 size=1">
+
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><font color=#999AAA >反射机制（Reflection mechanism）是 Java 程序开发语言的特征之一，它允许运行中的 Java 程序对自身进行检查，或者说“自审”，并能直接操作程序的内部属性。但是由于反射机制能在运行时动态的对类进行装载，优点能够增加程序的灵活性，缺点是使用反射机制也会严重影响系统的性能，所以可以恰当的使用，下文从一个程序员小白的角度去解释了反射机制，感谢观看，可能专业术语不准确或哪处有逻辑语法错误，希望读者能够指正！</p>
+<hr style=" border:solid; width:100px; height:1px;" color=#000000 size=1">
+
+<h1 id="一、什么是SpringIOC？"><a href="#一、什么是SpringIOC？" class="headerlink" title="一、什么是SpringIOC？"></a>一、什么是SpringIOC？</h1><h2 id="1-Ioc（控制反转）"><a href="#1-Ioc（控制反转）" class="headerlink" title="1.Ioc（控制反转）"></a>1.Ioc（控制反转）</h2><p><em><strong>360百科</strong></em>：控制反转(Inversion of Control，英文缩写为IoC)是框架的重要特征。<br>也就是将两个类之间的赋值关系转换给第三方容器spring处理；两个类A和B 直接创建B 现在不直接创建而是交给第三方容器让它来新建。</p>
+<h2 id="2-反转的解释"><a href="#2-反转的解释" class="headerlink" title="2.反转的解释"></a>2.反转的解释</h2><p><em><strong>谁控制谁，控制什么</strong></em>：传统Java SE程序设计，我们直接在对象内部通过new进行创建对象，是程序主动去创建依赖对象；而IoC是有专门一个容器来创建这些对象，即由Ioc容器来控制对象的创建；谁控制谁？当然是IoC 容器控制了对象；控制什么？那就是主要控制了外部资源获取（不只是对象包括比如文件等）。</p>
+<p><em><strong>为何是反转，哪些方面反转了</strong></em>：有反转就有正转，传统应用程序是由我们自己在对象中主动控制去直接获取依赖对象，也就是正转；而反转则是由容器来帮忙创建及注入依赖对象；为何是反转？因为由容器帮我们查找及注入依赖对象，对象只是被动的接受依赖对象，所以是反转；哪些方面反转了？依赖对象的获取被反转了。</p>
+<p><em><strong>例子：</strong></em> 在没有Spring之前，创建新对象的方式是new一个具体的对象（）；假设new ID：而ID的构造方法所需参数只需要个IDnumber类；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ID</span> &#123;<br>    <span class="hljs-keyword">private</span> ID IDnumber;<br> <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ID</span><span class="hljs-params">(ID IDnumber)</span> &#123;<br>        <span class="hljs-built_in">this</span>.IDnumber = IDnumber;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>此时创建一个ID对象需要先创建一个IDnumber对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">ID IDnumber=<span class="hljs-keyword">new</span> <span class="hljs-title class_">ID</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">IDnumber</span>);<br></code></pre></td></tr></table></figure>
+<p>而IOC在这个过程中又发挥了什么作用呢？<br>Spring提供了IOC 为我们找到了类与类间的关系，我们需要的生活直接获取到，省略了创建对象所需的步骤；而IOC的底层是DI（依赖注入）而DI依赖于Java的反射机制。</p>
+<h2 id="3-DI（依赖注入）"><a href="#3-DI（依赖注入）" class="headerlink" title="3.DI（依赖注入）"></a>3.DI（依赖注入）</h2><p>依赖第三方容器对对象属性赋值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java">A&#123;<br>    B b=<span class="hljs-keyword">new</span> <span class="hljs-title class_">B</span>();<br>&#125;<br>B&#123;<br> &#125;<br>A&#123;<br>    B b;给值就不叫控制反转  <br>    用的时候就得用依赖注入赋值，第三方容器依赖注入。<br>&#125;<br>B&#123;<br> &#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="4-Ioc的底层原理"><a href="#4-Ioc的底层原理" class="headerlink" title="4.Ioc的底层原理"></a>4.Ioc的底层原理</h2><p><font color=#999AAA >注：此文章主要讲Java的反射机制所以不加过多别的赘述，着重于Java反射机制。</p>
+<p>Spring 中的 IOC 的底层实现原理就是反射机制，Spring 的容器会帮我们创建实例，该容器中使用的方法就是反射，通过解析 xml 文件，获取到 id 属性和 class 属性里面的内容，利用反射原理创建配置文件里类的实例对象，存入到 Spring 的 bean 容器中。</p>
+<h1 id="二、什么是反射机制？"><a href="#二、什么是反射机制？" class="headerlink" title="二、什么是反射机制？"></a>二、什么是反射机制？</h1><p>反射的概念是由Smith在1982年首次提出的，主要是指程序可以访问、检测和修改它本身状态或行为的一种能力。这一概念的提出很快引发了计算机科学领域关于应用反射性的研究。它首先被程序语言的设计领域所采用，并在Lisp和面向对象方面取得了成绩。其中LEAD&#x2F;LEAD++ 、OpenC++ 、MetaXa和OpenJava等就是基于反射机制的语言。</p>
+<h2 id="1-反射机制"><a href="#1-反射机制" class="headerlink" title="1.反射机制"></a>1.反射机制</h2><p><font color=#999AAA >理解如下：</p>
+<p><strong>编译期：源代码翻译—————&gt;&gt;计算机能识别的代码</strong><br>              <strong>Java代码————&gt;JVM识别——&gt;.class文件</strong><br><strong>运行期:将课执行文件交给操作系统去执行。</strong><br><em><strong>反射机制:在运行期间，对于任意的类都能够知道这个类的所有属性和方法，对于任意一个对象都能够调用它的任意方法和属性。</strong></em></p>
+<h2 id="2-Java的反射机制"><a href="#2-Java的反射机制" class="headerlink" title="2.Java的反射机制"></a>2.Java的反射机制</h2><p>动态获取信息以及动态调用对象方法的功能称为Java语言的反射机制，Java 的这一特性非常强大，并且是其它一些常用语言，如 C、C++、Fortran 或者 Pascal 等都不具备的。</p>
+<h1 id="三、反射机制的作用及使用场景"><a href="#三、反射机制的作用及使用场景" class="headerlink" title="三、反射机制的作用及使用场景"></a>三、反射机制的作用及使用场景</h1><h2 id="1-作用"><a href="#1-作用" class="headerlink" title="1.作用"></a>1.作用</h2><p> 1.运行时判断对象所属的类<br> 2.运行时构造一个类的对象<br> 3.运行时判断一个类所具有的成员变量和方法<br> 4.运行时调用任意一个对象的方法<br> 5.当我们在使用比如Ecplise时，当我们输入一个对象或者类，并想调用他的属性和方法是，一按点号，编译器就会自动列出他的  属性或者方法，这里就是用到反射。</p>
+<h2 id="2-使用场景"><a href="#2-使用场景" class="headerlink" title="2.使用场景"></a>2.使用场景</h2><ol>
+<li>反编译（.class——&gt;.java）</li>
+<li>JDBC 连接加载驱动</li>
+<li>开发框架（通用性）<br>  框架具有通用性，在编译期间不可以明确规定再创建什么。<br>  Spring，SpringMVC框架都是反射机制来实现某些功能的。<br>  不同的项目可使用相同的结构框架，框架需要根据配置文件加载不同的类和对象（运行期间，动态加载所需对象）</li>
+</ol>
+<p> <font color=#999AAA >演示如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210311190644440.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L091dHNpZGVyZw==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>例1：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">Class.forName(<span class="hljs-string">&quot;com.mysql.jdbc.Driver&quot;</span>); <span class="hljs-comment">// 动态加载mysql驱动</span><br></code></pre></td></tr></table></figure>
+<p>例2：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">&lt;bean id=<span class="hljs-string">&quot;user&quot;</span> class=<span class="hljs-string">&quot;com.itmayiedu.User&quot;</span>&gt;<br></code></pre></td></tr></table></figure>
+<p><strong><strong>写完整路径的目的是：为了确保反射机制能够找到正确的类。</strong></strong></p>
+<h1 id="四-反射机制的应用"><a href="#四-反射机制的应用" class="headerlink" title="四.反射机制的应用"></a>四.反射机制的应用</h1><h2 id="1-反射机制获取类的三种方式"><a href="#1-反射机制获取类的三种方式" class="headerlink" title="1.反射机制获取类的三种方式"></a>1.反射机制获取类的三种方式</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//第一种方式：</span><br>Classa1=Class.forName(<span class="hljs-string">&quot;Employee&quot;</span>);<br><span class="hljs-comment">//第二种方式：</span><br><span class="hljs-comment">//java中每个类都有class属性</span><br>Classa2=Employee.class;<br><span class="hljs-comment">//第三种方式：</span><br><span class="hljs-comment">//java语言中任何一个java对象都有getClass方法</span><br>Employee=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Employee</span>();<br>Classa3=e.getClass();<br><span class="hljs-comment">//a3是运行时类(e的运行是类是Employee)</span><br></code></pre></td></tr></table></figure>
+<h2 id="2-反射创建对象并获取对象的方式"><a href="#2-反射创建对象并获取对象的方式" class="headerlink" title="2.反射创建对象并获取对象的方式"></a>2.反射创建对象并获取对象的方式</h2><p><font color=##0000CD  size="5" >无参构造演示如下：<br><img src="https://img-blog.csdnimg.cn/20210311191836849.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L091dHNpZGVyZw==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br><font color=#0000CD size="5">有参构造演示如下：<br><img src="https://img-blog.csdnimg.cn/20210311193401917.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L091dHNpZGVyZw==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20210311202226885.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L091dHNpZGVyZw==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h2 id="2-禁止Java反射机制的方法"><a href="#2-禁止Java反射机制的方法" class="headerlink" title="2.禁止Java反射机制的方法"></a>2.禁止Java反射机制的方法</h2><p><strong><strong>将构造函数私有化</strong></strong><br><font color=#999AAA >演示如下：<br><img src="https://img-blog.csdnimg.cn/20210311193620851.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L091dHNpZGVyZw==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20210311193655404.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L091dHNpZGVyZw==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>注：实际上Java的反射机制也可以调用类的内部私有方法<br>（请参考链接: <a target="_blank" rel="noopener" href="https://blog.csdn.net/xzz1173724284/article/details/88930972">https://blog.csdn.net/xzz1173724284/article/details/88930972</a>.)</p>
+<h1 id="五-反射机制的优缺点"><a href="#五-反射机制的优缺点" class="headerlink" title="五.反射机制的优缺点"></a>五.反射机制的优缺点</h1><h2 id="1-优点"><a href="#1-优点" class="headerlink" title="1.优点"></a>1.优点</h2><p>静态：编译时确定具体类型，绑定对象。<br>动态：运行时才会确定具体类型，能够降低类之间的耦合度最大限度发挥了java的灵活性。</p>
+<h2 id="2-缺点"><a href="#2-缺点" class="headerlink" title="2.缺点"></a>2.缺点</h2><p>对象原本是在编译器直接去创建，用户访问已存在，直接用反射机制必须在运行期间去创建对象，用户访问处于运行期间，一经访问发现还没创建，就要去创建对象，浪费时间，占用内存。</p>
+<hr style=" border:solid; width:100px; height:1px;" color=#000000 size=1">
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><font color=#191970 ><strong>以上就是我对反射机制的简单理解，本文简单说明了SpringIoc框架底层的关于反射机制的应用，和反射机制到底是什么，怎么应用及其使用场景和利用Java反射机制去创建和获取对象的具体操作，并且列出了反射机制的优缺点，虽然用Java反射机制对系统性能会产生影响，但仍然会使用。感谢观看！！！</strong></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/03/11/mybatis-plus%E7%AE%80%E5%8D%95%E8%AE%B2%E8%A7%A3/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/03/11/IDEA%E4%B8%AD%E6%96%B0%E5%BB%BAmaven%20web%E9%A1%B9%E7%9B%AE+Maven%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+      <div class="col-lg-7 mx-auto nopadding-x-md">
+        <div class="container custom mx-auto">
+          ’’
+        </div>
+      </div>
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
